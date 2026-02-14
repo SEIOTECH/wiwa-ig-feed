@@ -28,21 +28,22 @@
     flex: 0 0 auto;
     width: 280px;
     scroll-snap-align: start;
-    border-radius: 8px;
+    border-radius: 16px; /* Enhanced rounding */
     overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .wiwa-ig-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 15px rgba(0,0,0,0.15);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.12);
 }
 
 .wiwa-ig-media-wrapper {
     position: relative;
     width: 100%;
-    padding-top: 100%;
+    padding-top: 125%; /* 4:5 Aspect Ratio (Vertical) */
     background: #f0f0f0;
 }
 
@@ -62,15 +63,51 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     z-index: 2;
     pointer-events: none;
+    opacity: 0.9;
+    transition: opacity 0.3s;
+}
+
+.wiwa-ig-item:hover .wiwa-ig-video-icon {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
 }
 
 .wiwa-ig-video-icon svg {
     width: 100%;
     height: 100%;
+    drop-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Instagram Overlay Badge */
+.wiwa-ig-overlay-badge {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(4px);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    z-index: 3;
+    pointer-events: none;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.wiwa-ig-overlay-badge .dashicons {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+    color: #fff;
 }
 
 /* Navigation Buttons */
@@ -152,7 +189,7 @@
 
 @media (max-width: 768px) {
     .wiwa-ig-item {
-        width: 80%;
+        width: 75%; /* Show part of next item to encourage scroll */
     }
     .wiwa-ig-nav {
         display: none;

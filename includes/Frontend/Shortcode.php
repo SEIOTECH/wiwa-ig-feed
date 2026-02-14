@@ -56,15 +56,18 @@ class Shortcode
 
                             <div class="wiwa-ig-media-wrapper">
                                 <img src="<?php echo $image_src; ?>" alt="<?php echo $caption; ?>" loading="lazy">
-                                <?php if ($is_video): ?>
-                                    <div class="wiwa-ig-video-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <circle cx="12" cy="12" r="10" fill="rgba(0,0,0,0.5)" />
-                                            <path d="M10 8L16 12L10 16V8Z" fill="white" />
-                                        </svg>
-                                    </div>
-                                <?php endif; ?>
+                                <div class="wiwa-ig-overlay-badge">
+                                <span class="dashicons dashicons-instagram"></span> Instagram
                             </div>
+                            <?php if ($is_video): ?>
+                                <div class="wiwa-ig-video-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="12" cy="12" r="10" fill="rgba(0,0,0,0.5)" />
+                                                    <path d="M10 8L16 12L10 16V8Z" fill="white" />
+                                    </svg>
+                                </div>
+                            <?php endif; ?>
+                                        </div>
                         </a>
                     </div>
                 <?php endforeach; ?>
@@ -78,9 +81,9 @@ class Shortcode
             <div class="wiwa-lightbox-content">
                 <span class="wiwa-lightbox-close">&times;</span>
                 <div id="wiwa-lightbox-media"></div>
-            </div>
-        </div>
-        <?php
-        return ob_get_clean();
+                </div>
+                </div>
+                <?php
+                return ob_get_clean();
     }
 }
