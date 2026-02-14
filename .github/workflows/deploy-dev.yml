@@ -28,4 +28,4 @@ jobs:
             --exclude 'README.md' \
             --exclude 'DEPLOY_RULES.md' \
             -e "ssh -p ${{ secrets.SERVER_PORT }}" \
-            ./ wiwatour-ssh@${{ secrets.SERVER_IP }}:/home/wiwatour-dev/htdocs/dev.wiwatour.com/wp-content/plugins/wiwa-tour-ig-feed/
+            ./ wiwatour-dev@${{ secrets.SERVER_IP }}:/home/wiwatour-dev/htdocs/dev.wiwatour.com/wp-content/plugins/wiwa-tour-ig-feed/
