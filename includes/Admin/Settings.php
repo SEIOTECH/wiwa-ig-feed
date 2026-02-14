@@ -25,14 +25,44 @@ class Settings
                 <h1><span class="dashicons dashicons-camera"></span> Wiwa Tour Instagram Feed</h1>
                 <p>Configura la integración con la API de Instagram para mostrar tu feed profesionalmente.</p>
             </div>
-            <div class="wiwa-admin-card">
-                <form method="post" action="options.php">
-                    <?php
-                    settings_fields( 'wiwa_tour_ig_option_group' );
-                    do_settings_sections( 'wiwa-tour-ig-feed-admin' );
-                    submit_button( 'Guardar Configuración', 'primary large' );
-                    ?>
-                </form>
+            <div class="wiwa-admin-content">
+                <div class="wiwa-admin-main">
+                    <div class="wiwa-admin-card">
+                        <form method="post" action="options.php">
+                            <?php
+                            settings_fields( 'wiwa_tour_ig_option_group' );
+                            do_settings_sections( 'wiwa-tour-ig-feed-admin' );
+                            submit_button( 'Guardar Configuración', 'primary large' );
+                            ?>
+                        </form>
+                    </div>
+                </div>
+                <div class="wiwa-admin-sidebar">
+                    <div class="wiwa-admin-card wiwa-widget">
+                        <h3><span class="dashicons dashicons-shortcode"></span> Shortcode</h3>
+                        <p>Copia y pega este shortcode en cualquier página o post:</p>
+                        <div class="wiwa-code-block">
+                            <code>[wiwa_ig_feed]</code>
+                            <button type="button" class="copy-btn" onclick="navigator.clipboard.writeText('[wiwa_ig_feed]'); alert('Copiado!');"><span class="dashicons dashicons-clipboard"></span></button>
+                        </div>
+                        <p class="description">Parámetros opcionales:</p>
+                        <code>[wiwa_ig_feed limit="6"]</code>
+                    </div>
+
+                    <div class="wiwa-admin-card wiwa-widget">
+                        <h3><span class="dashicons dashicons-book"></span> Instrucciones</h3>
+                        <ol class="wiwa-instructions-list">
+                            <li>Genera un <strong>Access Token</strong> de Instagram válido.</li>
+                            <li>Pégalo en el campo de configuración.</li>
+                            <li>Define cuántos posts deseas mostrar.</li>
+                            <li>Selecciona si deseas abrir la imagen en un <strong>Modal</strong> o ir a <strong>Instagram</strong>.</li>
+                            <li>Usa el shortcode donde quieras mostrar el feed.</li>
+                        </ol>
+                        <div class="wiwa-alert">
+                            <span class="dashicons dashicons-info"></span> El feed se actualiza cada <strong><?php echo esc_html( get_option( 'wiwa_tour_ig_options' )['cache_time'] ?? 60 ); ?> minutos</strong> para optimizar velocidad.
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="wiwa-admin-footer">
                 <p>Desarrollado por el equipo de tecnología de Wiwa Tour.</p>

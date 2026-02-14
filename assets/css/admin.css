@@ -1,6 +1,6 @@
 /* Admin Wrapper */
 .wiwa-admin-wrap {
-  max-width: 800px;
+  max-width: 1100px;
   margin: 40px auto;
   font-family:
     "Roboto",
@@ -48,12 +48,91 @@
   font-size: 14px;
 }
 
+/* Content Grid */
+.wiwa-admin-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+@media (max-width: 960px) {
+    .wiwa-admin-content {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Card Container */
 .wiwa-admin-card {
   background: #fff;
-  padding: 40px;
-  border-radius: 0 0 12px 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  border: 1px solid #e2e4e7;
+}
+
+/* Sidebar Widgets */
+.wiwa-widget h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 16px;
+    border-bottom: 1px solid #f0f0f1;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.wiwa-code-block {
+    background: #f0f0f1;
+    padding: 10px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border: 1px solid #dcdcde;
+}
+
+.wiwa-code-block code {
+    background: transparent;
+    padding: 0;
+    font-size: 14px;
+    color: #2271b1;
+}
+
+.copy-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #646970;
+    padding: 5px;
+    transition: color 0.2s;
+}
+
+.copy-btn:hover {
+    color: #2271b1;
+}
+
+.wiwa-instructions-list {
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+.wiwa-instructions-list li {
+    margin-bottom: 8px;
+    color: #3c434a;
+}
+
+.wiwa-alert {
+    background: #e5f5fa;
+    color: #005a87;
+    padding: 10px;
+    border-left: 4px solid #00a0d2;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 /* Form Styling */
