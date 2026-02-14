@@ -1,0 +1,31 @@
+name: Deploy to Dev
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          if_key_exists: replace
+
+      - name: Deploy with rsync
+        run: |
+          rsync -avz --delete \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude '.gitignore' \
+            --exclude 'README.md' \
+            --exclude 'DEPLOY_RULES.md' \
+            -e "ssh -p ${{ secrets.SERVER_PORT }}" \
+            ./ wiwatour-ssh@${{ secrets.SERVER_IP }}:/home/wiwatour-dev/htdocs/dev.wiwatour.com/wp-content/plugins/wiwa-tour-ig-feed/

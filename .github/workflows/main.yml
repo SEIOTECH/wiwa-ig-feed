@@ -1,0 +1,32 @@
+name: Wiwa Tour IG Feed CI
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+    branches: ["main", "master"]
+
+jobs:
+  php-lint:
+    name: PHP Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.0"
+
+      - name: Check PHP syntax
+        run: find . -name "*.php" ! -path "./vendor/*" -print0 | xargs -0 -n 1 -P 4 php -l
+
+  structure-check:
+    name: Structure Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check for required files
+        run: |
+          if [ ! -f "wiwa-tour-ig-feed.php" ]; then echo "Main plugin file missing"; exit 1; fi
+          if [ ! -f "includes/Core/Plugin.php" ]; then echo "Core Plugin class missing"; exit 1; fi
