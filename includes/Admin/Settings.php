@@ -7,32 +7,39 @@ class Settings
 
     private $option_name = 'wiwa_tour_ig_options';
 
-    public function add_plugin_page()
-    {
-        add_options_page(
-            'Wiwa Instagram Feed',
-            'Instagram Feed',
-            'manage_options',
-            'wiwa-tour-ig-feed',
-        [$this, 'create_admin_page']
-        );
-    }
+    public function add_plugin_page() {
+		$hook = add_options_page(
+			'Wiwa Instagram Feed',
+			'Instagram Feed',
+			'manage_options',
+			'wiwa-tour-ig-feed',
+			[ $this, 'create_admin_page' ]
+		);
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_styles' ] );
+	}
 
-    public function create_admin_page()
-    {
-?>
-		<div class="wrap">
-			<h1>Wiwa Tour Instagram Feed Configuration</h1>
-			<form method="post" action="options.php">
-				<?php
-        settings_fields('wiwa_tour_ig_option_group');
-        do_settings_sections('wiwa-tour-ig-feed-admin');
-        submit_button();
-?>
-			</form>
+    public function create_admin_page() {
+		?>
+		<div class="wiwa-admin-wrap">
+            <div class="wiwa-admin-header">
+                <h1><span class="dashicons dashicons-camera"></span> Wiwa Tour Instagram Feed</h1>
+                <p>Configura la integración con la API de Instagram para mostrar tu feed profesionalmente.</p>
+            </div>
+            <div class="wiwa-admin-card">
+                <form method="post" action="options.php">
+                    <?php
+                    settings_fields( 'wiwa_tour_ig_option_group' );
+                    do_settings_sections( 'wiwa-tour-ig-feed-admin' );
+                    submit_button( 'Guardar Configuración', 'primary large' );
+                    ?>
+                </form>
+            </div>
+            <div class="wiwa-admin-footer">
+                <p>Desarrollado por el equipo de tecnología de Wiwa Tour.</p>
+            </div>
 		</div>
 		<?php
-    }
+	}
 
     public function register_settings()
     {
@@ -143,8 +150,10 @@ class Settings
         );
     }
 
-    public function enqueue_styles()
-    {
-    // Enqueue admin specific styles if needed
+    public function enqueue_styles( $hook ) {
+        if ( 'settings_page_wiwa-tour-ig-feed' !== $hook ) {
+            return;
+        }
+        wp_enqueue_style( 'wiwa-admin-style', WIWA_IG_PLUGIN_URL . 'assets/css/admin.css', [], WIWA_IG_VERSION );
     }
 }
