@@ -40,11 +40,8 @@ class Instagram_API
             }
 
             return $data;
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             // Log error if needed: error_log( $e->getMessage() );
-            // Return cached data if available (stale cache), otherwise empty array
-            // Since we already checked valid cache above, this is a hard failure scenario.
             return new \WP_Error('api_error', $e->getMessage());
         }
     }
@@ -53,7 +50,8 @@ class Instagram_API
     {
         $url = 'https://graph.instagram.com/me/media';
         $args = array(
-            'fields' => 'id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,username',
+            // Request children fields to better handle Carousels and deep thumbnails
+            'fields' => 'id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,username,children{media_type,media_url,thumbnail_url}',
             'access_token' => $this->access_token,
             'limit' => $limit,
         );
@@ -77,26 +75,42 @@ class Instagram_API
             return [];
         }
 
-        // Process data to ensure video thumbnails are always available in a standard field
+        // Process data
         $processed_data = array_map(function ($item) {
-            $item['image_src'] = $item['media_url']; // Default for IMAGE and CAROUSEL_ALBUM
+            $item['image_src'] = isset($item['media_url']) ? $item['media_url'] : '';
 
-            // CRITICAL: Fix for video thumbnails
+            // 1. VIDEO Handling
             if (isset($item['media_type']) && 'VIDEO' === $item['media_type']) {
-                if (isset($item['thumbnail_url'])) {
+                if (!empty($item['thumbnail_url'])) {
                     $item['image_src'] = $item['thumbnail_url'];
                 }
-                else {
-                // Fallback if Instagram doesn't return thumbnail (rare but possible)
-                // We might leave it as media_url but it won't render in an <img> tag.
-                // Ideally we could use a default placeholder or try to use media_url if it's a cover frame.
-                // For now, adhere to requesting thumbnail_url.
+            }
+
+            // 2. CAROUSEL Handling
+            // Sometimes Carousels don't have a top-level media_url or it might be buggy.
+            if (isset($item['media_type']) && 'CAROUSEL_ALBUM' === $item['media_type']) {
+                // If top-level matches video or is missing, try children
+                if (isset($item['children']['data'][0])) {
+                    $first_child = $item['children']['data'][0];
+                    // If child is VIDEO, prioritize its thumbnail
+                    if ('VIDEO' === $first_child['media_type'] && !empty($first_child['thumbnail_url'])) {
+                        $item['image_src'] = $first_child['thumbnail_url'];
+                    } elseif (!empty($first_child['media_url'])) {
+                        // Otherwise use child media_url (image)
+                        $item['image_src'] = $first_child['media_url'];
+                    }
                 }
+            }
+
+            // Filter out if no image source found (rare)
+            if (empty($item['image_src'])) {
+                return null;
             }
 
             return $item;
         }, $data['data']);
 
-        return $processed_data;
+        // Remove nulls
+        return array_values(array_filter($processed_data));
     }
 }
